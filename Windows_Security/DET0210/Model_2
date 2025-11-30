@@ -2,7 +2,7 @@ title: Off-Hours Domain Account Logon
 id: e4016d8c-b10d-46df-a1bb-det0210-an0590-2
 status: experimental
 description: Detects domain account logons outside normal business hours indicating potential unauthorized access.
-author: ChatGPT
+author: NullSpecter
 logsource:
   product: windows
   service: security
