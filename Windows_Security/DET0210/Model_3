@@ -1,0 +1,26 @@
+title: Impossible Travel Domain Logon Detection
+id: 6af56613-50c8-44b0-8ac1-det0210-an0590-3
+status: experimental
+description: Detects domain account logons from geographically distant IPs within an impossible time window.
+author: NullSpecter
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID:
+      - 4624
+      - 4768
+    LogonType:
+      - 3
+      - 10
+  filter_machine_accounts:
+    TargetUserName|endswith: '$'
+  condition: selection and not filter_machine_accounts
+fields:
+  - TargetUserName
+  - IpAddress
+  - WorkstationName
+falsepositives:
+  - VPN IP pool changes
+level: high
