@@ -1,0 +1,28 @@
+title: Suspicious Multiple Host Logons Using Domain Account
+id: bbb7de87-7c23-4fd4-9a7a-det0210-an0590-1
+status: experimental
+description: Detects a domain account logging into multiple different hosts within a short time window, indicating potential credential misuse.
+author: NullSpecter
+logsource:
+  product: windows
+  service: security
+detection:
+  selection_successful_logon:
+    EventID:
+      - 4624
+      - 4768     # Kerberos TGT Request
+    LogonType:
+      - 2        # Interactive
+      - 3        # Network
+      - 10       # RemoteInteractive
+  filter_machine_accounts:
+    TargetUserName|endswith: '$'
+  condition: selection_successful_logon and not filter_machine_accounts
+fields:
+  - TargetUserName
+  - IpAddress
+  - WorkstationName
+  - LogonType
+falsepositives:
+  - Admins logging into multiple servers during maintenance
+level: high
